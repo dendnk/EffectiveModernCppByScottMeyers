@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <array>
 
 
 /*
@@ -49,21 +50,21 @@ std::string_view GetTypeName()
 
 
 template<typename T>
-void Case11Deduce(T& param)
+void Case11T(T& param)
 {
     std::cout << "T :\t" << std::setw(10) << GetTypeName<T>() << "\t";
     std::cout << "param :\t" << std::setw(10) << GetTypeName<decltype(param)>() << std::endl;
 }
 
 template<typename T>
-void Case12Deduce(const T& param)
+void Case12T(const T& param)
 {
     std::cout << "T :\t" << std::setw(10) << GetTypeName<T>() << "\t";
     std::cout << "param :\t" << std::setw(10) << GetTypeName<decltype(param)>() << std::endl;
 }
 
 template<typename T>
-void Case13Deduce(T* param)
+void Case13T(T* param)
 {
     std::cout << "T :\t" << std::setw(10) << GetTypeName<T>() << "\t";
     std::cout << "param :\t" << std::setw(10) << GetTypeName<decltype(param)>() << std::endl;
@@ -79,22 +80,22 @@ void Case1()
 
     std::cout << "Case [T& param] : " << std::endl;
 
-    Case11Deduce(x);    //   T :            int      param :           int&
-    Case11Deduce(cx);   //   T :      const int      param :     const int&
-    Case11Deduce(rx);   //   T :      const int      param :     const int&
+    Case11T(x);    //   T :            int      param :           int&
+    Case11T(cx);   //   T :      const int      param :     const int&
+    Case11T(rx);   //   T :      const int      param :     const int&
 
     std::cout << "Case [const T& param] : " << std::endl;
 
-    Case12Deduce(x);    //   T :            int      param :     const int&
-    Case12Deduce(cx);   //   T :            int      param :     const int&
-    Case12Deduce(rx);   //   T :            int      param :     const int&
+    Case12T(x);    //   T :            int      param :     const int&
+    Case12T(cx);   //   T :            int      param :     const int&
+    Case12T(rx);   //   T :            int      param :     const int&
 
     std::cout << "Case [T* param] : " << std::endl;
 
     const int* px = &x; // pointer to x, as a const int
 
-    Case13Deduce(&x);   //  T :            int      param :           int*
-    Case13Deduce(px);   //  T :      const int      param :     const int*
+    Case13T(&x);   //  T :            int      param :           int*
+    Case13T(px);   //  T :      const int      param :     const int*
 }
 
 
@@ -137,7 +138,7 @@ template<typename T>
 void Case3T(T param)
 {
     std::cout << "T :\t" << std::setw(10) << GetTypeName<T>() << "\t";
-    std::cout << "ParamType :\t" << std::setw(10) << GetTypeName<decltype(param)>() << std::endl;
+    std::cout << "param :\t" << std::setw(10) << GetTypeName<decltype(param)>() << std::endl;
 }
 
 void Case3()
@@ -162,10 +163,56 @@ void Case3()
     Case3T(ptr);    //T :     const char*     param :     const char*
 }
 
+/*
+*   Arguments-arrays
+*/
+
+template<typename T, std::size_t N>
+constexpr std::size_t GetArraySize(T(&)[N]) noexcept
+{
+    return N;
+    /*
+    *   declartion constexpr give to us ability to get result at compile time
+    *   so we can use it for declaration othe arrays with the same size
+    */
+}
+
+
+void ArgumentsArrays()
+{
+    const char name[] = "Briggs";   // name type        - const char[7]
+    const char* ptrToName = name;   // ptrTo Name type  - const char*
+
+    std::cout << "Arguments-Arrays" << std::endl;
+
+    // We get parameter by value
+    std::cout << "We get parameter by value" << std::endl;
+    Case3T(name);       //T :     const char*     param :     const char*   name : const char[7]
+    Case3T(ptrToName);  //T :     const char*     param :     const char*
+
+    /*
+    *   Function with such argument     void FuncWithArrayArgument(int param[]);
+    *   will be equal to this           void FuncWithArrayArgument(int* param);
+    *   that's why we have  const char* result
+    */
+
+    // If we get paramter by reference
+    std::cout << "We get parameter by reference" << std::endl;
+    Case11T(name);      //T :     const char[7]   param : const char(&)[7] (reference to array)
+    Case11T(ptrToName); //T :     const char*     param : const char*&
+
+    int keyValues[] = { 1,3,5,7,9,11,22,35 };
+
+    std::array<int, GetArraySize(keyValues)> mappedValues;
+}
+
+
 
 int main()
 {
-    Case1();
-    Case2();
-    Case3();
+    //Case1();
+    //Case2();
+    //Case3();
+
+    ArgumentsArrays();
 }
