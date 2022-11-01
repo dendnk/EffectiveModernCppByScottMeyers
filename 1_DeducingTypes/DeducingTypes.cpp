@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <array>
+#include <vector>
 
 
 /*
@@ -12,7 +13,7 @@
 *   "ParamType" can be
 *   1. - pointer or reference / but not universal reference
 *   2. - universal reference (&&)
-*   3. - not pointer and not reference
+*   3. - nor pointer nor reference
 */
 
 /*
@@ -126,7 +127,7 @@ void Case2()
 
 
 /*
-*   Case 3 "ParamType"  - not pointer and not reference
+*   Case 3 "ParamType"  - nor pointer nor reference
 *
 *   It means that param will be copy of passed object - it will be the new object
 *
@@ -147,7 +148,7 @@ void Case3()
     const int cx = x;
     const int& rx = x;
 
-    std::cout << "Case 3 ""ParamType""  - not pointer and not reference" << std::endl;
+    std::cout << "Case 3 ""ParamType""  - nor pointer nor reference" << std::endl;
 
     Case3T(x);      //T :            int      param :            int
     Case3T(cx);     //T :            int      param :            int
@@ -204,8 +205,125 @@ void ArgumentsArrays()
     int keyValues[] = { 1,3,5,7,9,11,22,35 };
 
     std::array<int, GetArraySize(keyValues)> mappedValues;
+
+    for (const auto& value : mappedValues)
+    {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
 }
 
+
+/*
+*   Arguments-functions
+*/
+
+void SomeFunc(int, double)
+{
+
+}
+
+
+void ArgumentsFunctions()
+{
+    std::cout << "Arguments-Functions" << std::endl;
+
+    // We pass fucntion by value to template function
+    std::cout << "Pass by value" << std::endl;
+    Case3T(SomeFunc);   //T :     void(__cdecl *)(int,double)     param : void(__cdecl *)(int,double)
+
+    // We pass fucntion by reference to template function
+    std::cout << "Pass by reference" << std::endl;
+    Case11T(SomeFunc);  //T :     void(int,double)        param : void(__cdecl &)(int,double)
+}
+
+
+/*
+*   Deduce auto
+*/
+
+void SomeOtherFunc(int, double) {};
+
+template<typename T>
+void DeduceAutoT(std::initializer_list<T> initList)
+{
+    std::cout << "T :\t" << std::setw(10) << GetTypeName<T>() << "\t";
+    std::cout << "initList :\t" << std::setw(10) << GetTypeName<decltype(initList)>() << std::endl;
+}
+
+void DeduceAuto()
+{
+    /*
+    *   Deducing auto similar to deducing templates but with one exception
+    */
+
+    auto        x = 27;     //  Case 3 (x - nor pointer nor reference)
+    const auto  cx = x;     //  Case 3 (cx - nor pointer nor reference)
+    const auto& rx = x;     //  Case 1 (rx - reference (not universal))
+
+    auto&& uref1 = x;       // x    -   int and lvalue;         uref1 type :    &int
+    auto&& uref2 = cx;      // cx   -   const int and lvalue;   uref2 type :    const int&
+    auto&& uref3 = 27;      // 27   -   int and rvalue;         uref3 type :    int&&
+
+    const char name[] = "R. N. Briggs"; //  char type   -   const char[13]
+    auto arr1 = name;                   //  arr1 type   -   const char*
+    auto& arr2 = name;                  //  arr2 type   -   const char(&)[13]
+
+    auto func1 = SomeOtherFunc;         //  func1 type  -   void(*)(int,double)
+    auto& func2 = SomeOtherFunc;        //  func2 type  -   void(&)(int,double)
+
+
+    /* Declaration int with init value 27 */
+    // In C++98
+    int x1 = 27;
+    int x2(27);
+
+    // In C++11
+    int x3 = 27;    // support previous declaration
+    int x4(27);    // support previous declaration
+    int x5 = { 27 };// new
+    int x6{ 27 };   // new
+
+    // What if we replace type by auto?
+    auto x11 = 27;      //  type int, value = 27
+    auto x12(27);       //  type int, value = 27
+    auto x13 = { 27 };  //  std::initializer_list<int>, value {27}
+    auto x14{ 13 };     //  should be std::initializer_list<int>, value {27}, but the compiler shows int ???
+
+    /*
+    *   if we use {}, it will have the std::initializer_list type
+    */
+
+    auto xx = { 11,23,9 };
+    Case3T(xx);
+
+    // Case3T({ 101,230,90 }); will not compile, template functions should have arguments as std::initializeer_list
+
+    DeduceAutoT({ 101,230,90 }); //T    -   int;    initList    -   std::initializer_list<int>
+
+    // In C++14
+    /*
+    *   Allow using auto for returning types of functions
+    *   Allow using auto for arguments in lambdas
+    *
+    *   But in such cases it will be used deducing template type, not deducing auto
+    *
+    *   auto CreateInitList()
+    *   {
+    *       return { 1,2,3 }; // cannot deduce a type as an initializer list is not an expression
+    *   }
+    *
+    */
+
+    std::vector<int> v;
+
+    auto ResetV = [&v](const auto& NewValue)
+    {
+        v = NewValue;
+    };
+
+    // ResetV({ 1,2,3 }); can't deduce type for {1,2,3,}
+}
 
 
 int main()
@@ -214,5 +332,9 @@ int main()
     //Case2();
     //Case3();
 
-    ArgumentsArrays();
+    //ArgumentsArrays();
+
+    //ArgumentsFunctions();
+
+    DeduceAuto();
 }
