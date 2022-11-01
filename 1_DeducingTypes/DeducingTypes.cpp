@@ -507,7 +507,7 @@ void DecltypeMain()
     *   {
     *       int x = 0;
     *       ...
-    *       return (x);   // decltype((x)) - int&, so f1 will return int&
+    *       return (x);   // decltype((x)) - int&, so f2 will return int& and it will try to return reference to local value!
     *   }
     */
 }
