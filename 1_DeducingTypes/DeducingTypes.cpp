@@ -3,6 +3,8 @@
 #include <array>
 #include <vector>
 
+#include <boost/type_index.hpp>
+
 
 /*
 *   template<typename T>
@@ -467,7 +469,7 @@ void DecltypeMain()
 
     if (f(w)) {}                    //  decltype(f(w))  -   bool
 
-    CustomVector<int> CV;           //  decltype(CV)  -   CustomVector<int>
+    //CustomVector<int> CV;           //  decltype(CV)  -   CustomVector<int>
 
     //if (CV[0] == 0) {}              //  decltype(CV[0]) -   int&
 
@@ -513,6 +515,82 @@ void DecltypeMain()
 }
 
 
+/*
+*   There are 3 cases when we can view the types
+*   1.  while edit code in IDE
+*   2.  at compile time
+*   3.  at runtime
+*/
+
+/*
+*   To show types by compiler, we can just declare template class without implementation,
+*   and then while trying instance it compiler will show errors with types
+*/
+template<typename T>
+class TD;
+
+
+template<typename T>
+void ShowTypesT(const T& param)
+{
+    std::cout << "T : " << typeid(T).name() << " | ";
+    std::cout << "param : " << typeid(param).name() << std::endl;
+}
+
+template<typename T>
+void ShowTypesBoost(const T& param)
+{
+    using boost::typeindex::type_id_with_cvr;
+
+    std::cout << "T : " << type_id_with_cvr<T>().pretty_name() << " | ";
+    std::cout << "param : " << type_id_with_cvr<decltype(param)>().pretty_name() << std::endl;
+}
+
+std::vector<Widget> createVec()
+{
+    std::vector<Widget> Result{ Widget() };
+    return Result;
+}
+
+
+void ShowTypes()
+{
+    /*
+    *   in IDE just need to hover your mouse over the variable name
+    */
+    const int theAnswer = 42;
+    auto x = theAnswer;     //  int
+    auto y = &theAnswer;    //  const int*
+
+    // At compile time
+    //TD<decltype(x)> xType;  //  Error message with type of x : error C2079: 'xType' uses undefined class 'TD<int>'
+    //TD<decltype(y)> yType;  //  Error message with type of y : error C2079: 'yType' uses undefined class 'TD<const int *>'
+
+    // At runtime
+    std::cout << typeid(x).name() << std::endl;
+    std::cout << typeid(y).name() << std::endl;
+
+    const auto vw = createVec();
+
+    if (!vw.empty())
+    {
+        ShowTypesT(&vw[0]);  //T : class Widget const *  | param : class Widget const *
+
+        /*
+        *   it shows not true type for param, it should have    :  const Widget* const &
+        *
+        *   its because we have &vw[0] - reference, and reference part will be descarded in template function f(const T& param)
+        *   and after it the const/volatile qualificators also will be ignored
+        *   that's why we get const Widget* and not const Widget * const &
+        *
+        *   We can use function from Boost.TypeIndex from boost library from boost.org : ShowTypesBoost()
+        */
+
+        ShowTypesBoost(&vw[0]); // class Widget const * | param : class Widget const *  const &
+    }
+}
+
+
 int main()
 {
     //Case1();
@@ -524,5 +602,7 @@ int main()
 
     //DeduceAuto();
 
-    DecltypeMain();
+    //DecltypeMain();
+
+    ShowTypes();
 }
