@@ -141,9 +141,11 @@
   <ItemGroup>
     <ClCompile Include="MovingToModernCpp.cpp" />
     <ClCompile Include="UniformInitialization.cpp" />
+    <ClCompile Include="UseNullptr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UniformInitialization.h" />
+    <ClInclude Include="UseNullptr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

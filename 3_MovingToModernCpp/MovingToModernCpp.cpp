@@ -1,8 +1,10 @@
 #include <iostream>
 #include "UniformInitialization.h"
+#include "UseNullptr.h"
 
 
 int main()
 {
-	UniformInitializationMain();
+	//UniformInitializationMain();
+	UseNullptrMain();
 }

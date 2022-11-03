@@ -21,9 +21,15 @@
     <ClCompile Include="UniformInitialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UseNullptr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UniformInitialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UseNullptr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
