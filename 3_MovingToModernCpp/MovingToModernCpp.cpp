@@ -2,7 +2,8 @@
 //#include "UniformInitialization.h"
 //#include "UseNullptr.h"
 //#include "UseAlias.h"
-#include "UseScopedEnum.h"
+//#include "UseScopedEnum.h"
+#include "UseDeletedFunctions.h"
 
 
 int main()
@@ -10,5 +11,6 @@ int main()
 	//UniformInitializationMain();
 	//UseNullptrMain();
 	//UseAliasMain();
-	UseScopedEnumMain();
+	//UseScopedEnumMain();
+	UseDeletedFunctionsMain();
 }
