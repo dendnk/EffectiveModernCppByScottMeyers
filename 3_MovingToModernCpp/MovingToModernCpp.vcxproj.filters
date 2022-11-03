@@ -24,12 +24,24 @@
     <ClCompile Include="UseNullptr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UseAlias.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UseScopedEnum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UniformInitialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UseNullptr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UseAlias.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UseScopedEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

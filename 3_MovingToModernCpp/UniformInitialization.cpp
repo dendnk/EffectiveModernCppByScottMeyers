@@ -60,7 +60,7 @@ void UniformInitializationMain()
 
 	ClassA a3(10);	//	constructor with argument
 
-	ClassA a4();	//	Syntax analysis recognize it like function declaration with returning type Widget
+	//ClassA a4();	//	Syntax analysis recognize it like function declaration with returning type Widget
 
 	ClassA a5{};	//	constructor without arguments
 
