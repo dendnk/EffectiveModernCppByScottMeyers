@@ -146,13 +146,17 @@
     <ClCompile Include="MovingToModernCpp.cpp" />
     <ClCompile Include="UniformInitialization.cpp" />
     <ClCompile Include="UseAlias.cpp" />
+    <ClCompile Include="UseDeletedFunctions.cpp" />
     <ClCompile Include="UseNullptr.cpp" />
+    <ClCompile Include="UseOverrideFunctions.cpp" />
     <ClCompile Include="UseScopedEnum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UniformInitialization.h" />
     <ClInclude Include="UseAlias.h" />
+    <ClInclude Include="UseDeletedFunctions.h" />
     <ClInclude Include="UseNullptr.h" />
+    <ClInclude Include="UseOverrideFunctions.h" />
     <ClInclude Include="UseScopedEnum.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

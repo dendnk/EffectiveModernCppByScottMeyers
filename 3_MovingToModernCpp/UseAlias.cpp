@@ -18,33 +18,33 @@ public:
 */
 
 // MyAllocList<T> - synonym for std::list<T,MyAlloc<T>>:
-template<typename T>
-using MyAllocList = std::list<T, MyAlloc<T>>;
+//template<typename T>
+//using MyAllocList = std::list<T, MyAlloc<T>>;
 
 // If we will use typedef
 // MyAllocList<T> - synonym for std::list<T,MyAlloc<T>>:
-template<typename T>
-struct MyAlloList2
-{
-	typedef std::list<T, MyAlloc<T>> type;
-};
+//template<typename T>
+//struct MyAlloList2
+//{
+//	typedef std::list<T, MyAlloc<T>> type;
+//};
 
-template<typename T>
-class CC	// ClassCC<T> contains MyAllocList2<T> as member data
-{
-	typename MyAlloList2<T>::type list;
-	/*
-	*	Here MyAlloList2<T>::type refrence to type, that depend on type of (T).
-	*	So MyAlloList2<T>::type is dependent type . so name of it should have typename keyword
-	*/
-};
+//template<typename T>
+//class CC	// ClassCC<T> contains MyAllocList2<T> as member data
+//{
+//	typename MyAlloList2<T>::type list;
+//	/*
+//	*	Here MyAlloList2<T>::type refrence to type, that depend on type of (T).
+//	*	So MyAlloList2<T>::type is dependent type . so name of it should have typename keyword
+//	*/
+//};
 
 // In alias case
-template<typename T>
-class DD	// ClassDD<T> contains MyAllocList<T> as member data
-{
-	MyAlloList<T> list; // nor use ::type, nor typename
-};
+//template<typename T>
+//class DD	// ClassDD<T> contains MyAllocList<T> as member data
+//{
+//	MyAlloList<T> list; // nor use ::type, nor typename
+//};
 
 
 void UseAliasMain()
@@ -68,9 +68,9 @@ void UseAliasMain()
 	*	Alias decalration can be templated, and typedef not
 	*/
 
-	MyAllocList<ClassBB> lBB;
+	//MyAllocList<ClassBB> lBB;
 
-	MyAlloList2<ClassBB>::type lBB2;
+	//MyAlloList2<ClassBB>::type lBB2;
 
 	/*
 	*	typedef not support templatization

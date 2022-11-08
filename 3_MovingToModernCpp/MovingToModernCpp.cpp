@@ -3,7 +3,8 @@
 //#include "UseNullptr.h"
 //#include "UseAlias.h"
 //#include "UseScopedEnum.h"
-#include "UseDeletedFunctions.h"
+//#include "UseDeletedFunctions.h"
+#include "UseOverrideFunctions.h"
 
 
 int main()
@@ -12,5 +13,6 @@ int main()
 	//UseNullptrMain();
 	//UseAliasMain();
 	//UseScopedEnumMain();
-	UseDeletedFunctionsMain();
+	//UseDeletedFunctionsMain();
+	UseOverrideFunctionsMain();
 }

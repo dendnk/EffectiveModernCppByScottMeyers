@@ -49,6 +49,6 @@ void processPointer(const char* ptr) = delete;
 void UseDeletedFunctionsMain()
 {
 	FF f1{};
-	FF f2 = f1;		//	Deleted copy constructor
-	FF f3{ f1 };	//	Deleted copy constructor
+	//FF f2 = f1;		//	Deleted copy constructor
+	//FF f3{ f1 };	//	Deleted copy constructor
 }
